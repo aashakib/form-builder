@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Form builder</title>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        #form-builder .slide-up {
+            margin-top: 7px;
+        }
+
+        #form-builder .slide-down {
+            margin-top: 3px;
+        }
+
+        #form-builder .remove-row {
+            margin-top: 29px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>HTML Form Builder</h1>
+    </div>
+    <div class="row setting-panel">
+        <form action="" id="form-setting">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Input</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <select name="input_types" id="input_types" class="form-control">
+                                <option value="0">Select Type</option>
+                                <option value="text">Text</option>
+                                <option value="textarea">Textarea</option>
+                                <option value="file">File</option>
+                                <option value="dropdown">Dropdown</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="radio">Radio</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="label" class="form-control" placeholder="Label name" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Common Attributes</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <input type="text" name="input_name" class="form-control" placeholder="Name" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" name="input_id" class="form-control" placeholder="id" disabled>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="input_class" class="form-control" placeholder="class" disabled>
+                        </div>
+                        <div class="form-group text-common">
+                            <input type="text" name="group_addon" class="form-control" placeholder="group addon" c>
+                        </div>
+                        <div class="form-group checkbox-common">
+                            <select name="checkbox_layout" class="form-control" disabled>
+                                <option value="horizontal">Horizontal</option>
+                                <option value="inline">Inline</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Configurable Attributes</div>
+                    <div class="panel-body">
+                        <div class="form-group text-common">
+                            <select name="type" id="" class="form-control" disabled>
+                                <option value="text">text</option>
+                                <option value="email">email</option>
+                                <option value="password">password</option>
+                                <option value="number">number</option>
+                                <option value="url">url</option>
+                                <option value="search">search</option>
+                            </select>
+                        </div>
+                        <div class="form-group text-common textarea-common">
+                            <input type="text" name="palceholder" class="form-control"
+                                   placeholder="palceholder text"
+                                   disabled>
+                        </div>
+                        <div class="form-group text-common">
+                            <input type="text" name="max_length" class="form-control" placeholder="max length"
+                                   disabled>
+                        </div>
+                        <div class="form-group textarea-common">
+                            <input type="text" name="cols" class="form-control" placeholder="cols">
+                        </div>
+                        <div class="form-group textarea-common">
+                            <input type="text" name="rows" class="form-control" placeholder="rows">
+                        </div>
+                        <div class="form-group dropdown-common">
+                            <div class="row option-row copy-option">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <input type="text" name="dropdown_options" class="form-control"
+                                               placeholder="options">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-default btn-success  btn-sm add-option"><i
+                                            class="glyphicon glyphicon-plus"></i></button>
+                                    <button type="button" class="btn btn-default btn-danger btn-sm remove-option"><i
+                                            class="glyphicon glyphicon-remove"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-default btn-success btn-sm add-option hide"><i
+                    class="glyphicon glyphicon-plus"></i></button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body">
+                <div class="center-block" style="width: 142px">
+                    <button class="btn btn-primary" id="add-item" disabled>Add</button>
+                    <button class="btn btn-success" id="get-code" data-target=".bs-example-modal-lg" disabled>Get Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Preview of Your Form</div>
+                <div class="panel-body">
+                    <div id="form-builder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Copy Code</h4>
+                </div>
+                <div class="modal-body">
+                    <pre id="user-form-code" class="brush: html"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+<script id="text-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                {{#if group_addon}}
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">{{group_addon}}</span>
+                    <input type="{{type}}" name="{{input_name}}" id="{{input_id}}" class="form-control {{input_class}}"
+                           placeholder="{{palceholder}}" maxlength="{{max_length}}">
+                </div>
+                {{else}}
+                <input type="{{type}}" name="{{input_name}}" id="{{input_id}}" class="form-control {{input_class}}"
+                       placeholder="{{palceholder}}" maxlength="{{max_length}}">
+                {{/if}}
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script id="textarea-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                <textarea name="{{input_name}}" id="{{input_id}}" class="form-control {{input_class}}" cols="{{cols}}"
+                          rows="{{rows}}" maxlength="{{max_length}}"></textarea>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script id="file-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                <input type="{{input_types}}" name="{{input_name}}" id="{{input_id}}" class="{{input_class}}">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script id="dropdown-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                <select name="{{input_name}}" id="{{input_id}}" class="form-control {{input_class}}">
+                    {{#if dropdown_options}}
+                    {{#each dropdown_options}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                    {{/if}}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script id="checkbox-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                {{#ifCond checkbox_layout '==' 'horizontal'}}
+                {{#if dropdown_options}}
+                {{#each dropdown_options}}
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="{{input_name}}" id="{{input_id}}" class="{{input_class}}"
+                               value="{{this}}">
+                        {{this}}
+                    </label>
+                </div>
+                {{/each}}
+                {{/if}}
+                {{else}}
+                <div class="checkbox">
+                    {{#if dropdown_options}}
+                    {{#each dropdown_options}}
+                    <label>
+                        <input type="checkbox" name="{{input_name}}" id="{{input_id}}" class="{{input_class}}"
+                               value="{{this}}">
+                        {{this}}
+                    </label>
+                    {{/each}}
+                    {{/if}}
+                </div>
+                {{/ifCond}}
+
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script id="radio-template" type="text/x-handlebars-template">
+    <div class="row custom-row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-up"><i
+                    class="glyphicon glyphicon-arrow-up"></i></button>
+            <br/>
+            <button type="button" class="btn btn-default btn-info  btn-sm slide-down"><i
+                    class="glyphicon glyphicon-arrow-down"></i></button>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>{{label}}</label>
+                {{#ifCond checkbox_layout '==' 'horizontal'}}
+                {{#if dropdown_options}}
+                {{#each dropdown_options}}
+                <div class="checkbox">
+                    <label>
+                        <input type="radio" name="{{input_name}}" id="{{input_id}}" class="{{input_class}}"
+                               value="{{this}}">
+                        {{this}}
+                    </label>
+                </div>
+                {{/each}}
+                {{/if}}
+                {{else}}
+                <div class="checkbox">
+                    {{#if dropdown_options}}
+                    {{#each dropdown_options}}
+                    <label>
+                        <input type="radio" name="{{input_name}}" id="{{input_id}}" class="{{input_class}}"
+                               value="{{this}}">
+                        {{this}}
+                    </label>
+                    {{/each}}
+                    {{/if}}
+                </div>
+                {{/ifCond}}
+
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-default btn-danger btn-sm remove-row"><i
+                    class="glyphicon glyphicon-remove"></i></button>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/syntaxhighlighter/3.0.83/scripts/shCore.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/syntaxhighlighter/3.0.83/scripts/shBrushXml.js"></script> -->
+<script type="text/javascript">
+    ;
+
+    Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+        switch (operator) {
+            case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+        }
+    });
+    $(function () {
+        var hideAll = function () {
+            $('.text-common').hide();
+            $('.textarea-common').hide();
+            $('.dropdown-common').hide();
+            $('.checkbox-common').hide();
+        }
+
+        hideAll();
+        var plusButton = $('.hide');
+        var orgFrom = $('#form-setting').html();
+
+        function getFormData($form) {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+            $.map(unindexed_array, function (n, i) {
+                indexed_array[n['name']] = n['value'];
+            });
+
+            return indexed_array;
+        }
+
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+
+        function resetForm() {
+//            $('#form-setting')[0].reset();
+            $('#form-setting').html(orgFrom);
+            $("#form-setting input").attr('disabled');
+        }
+
+        var txtTemplate = $("#text-template").html();
+        var txtareaTemplate = $("#textarea-template").html();
+        var fileTemplate = $("#file-template").html();
+        var dropdownTemplate = $("#dropdown-template").html();
+        var checkboxTemplate = $("#checkbox-template").html();
+        var radioTemplate = $("#radio-template").html();
+
+        var processTextTemplate = function ($form, templateFormat) {
+            var template = Handlebars.compile(templateFormat);
+//            var formdata = getFormData($form);
+            var formdata = $form.serializeObject();
+            console.log(formdata);
+            $("#form-builder").append(template(formdata));
+        }
+
+        $('#form-setting').on('click', '#input_types', function () {
+            var selected = $(this).val();
+            if (selected != 0) {
+                $("#form-setting input, #form-setting select, .center-block button").removeAttr('disabled');
+            } else {
+                $("#form-setting input").attr('disabled');
+            }
+
+            if (selected == 'text') {
+                hideAll();
+                $('.text-common').show();
+            } else if (selected == 'textarea') {
+                hideAll();
+                $('.textarea-common').show();
+            } else if (selected == 'file') {
+                hideAll();
+            } else if (selected == 'dropdown') {
+                hideAll();
+                $('.dropdown-common').show();
+            } else if (selected == 'checkbox') {
+                hideAll();
+                $('.dropdown-common').show();
+                $('.checkbox-common').show();
+            }else if (selected == 'radio') {
+                hideAll();
+                $('.dropdown-common').show();
+                $('.checkbox-common').show();
+            }
+
+        });
+
+        $('.row').on('click', '#add-item', function () {
+            var $form = $("#form-setting");
+            var selected = $('#input_types').val();
+
+            if (selected == 'text') {
+                processTextTemplate($form, txtTemplate);
+                /*var template = Handlebars.compile(txtTemplate);
+                 var formdata = getFormData($form);
+                 $("#form-builder").append(template(formdata));*/
+            } else if (selected == 'textarea') {
+                processTextTemplate($form, txtareaTemplate);
+            } else if (selected == 'file') {
+                processTextTemplate($form, fileTemplate);
+            } else if (selected == 'dropdown') {
+                processTextTemplate($form, dropdownTemplate);
+            } else if (selected == 'checkbox') {
+                processTextTemplate($form, checkboxTemplate);
+            }else if (selected == 'radio') {
+                processTextTemplate($form, radioTemplate);
+            }
+
+            resetForm();
+            hideAll();
+        });
+
+        // remove row
+        $('#form-builder').on('click', '.remove-row', function () {
+            $(this).parents('.custom-row').detach();
+            //$(this).parents('.row').detach();
+        });
+
+        // code for up
+        $('#form-builder').on('click', '.slide-up', function () {
+            if ($(this).parents('.custom-row').prev('.custom-row').length > 0) {
+                var upRow = $(this).parents('.custom-row');
+                var upRowdata = upRow.clone(true);
+                $(this).parents('.custom-row').prev('.custom-row').before(upRowdata);
+                upRow.detach();
+            }
+        });
+
+        // code for down
+        $('#form-builder').on('click', '.slide-down', function () {
+            if ($(this).parents('.custom-row').next('.custom-row').length > 0) {
+                var downRow = $(this).parents('.custom-row');
+                var downRowdata = downRow.clone(true);
+                $(this).parents('.custom-row').next('.custom-row').after(downRowdata);
+                downRow.detach();
+            }
+        });
+
+        // code for add option
+        $('#form-setting').on('click', '.add-option', function () {
+            var copyRow = $('.copy-option');
+            var copydata = copyRow.clone(true);
+            copyRow.removeClass('copy-option');
+            copydata.find('.form-control').val('')
+            $(this).parents('.option-row').after(copydata);
+            $(this).parents('.option-row').find('.add-option').detach();
+        });
+
+        // code for add option
+        $('#form-setting').on('click', '.remove-option', function () {
+            if ($('.option-row').length > 1) {
+                if ($(this).parents('.option-row').next('.option-row').length == 0) {
+                    $(this).parents('.option-row').prev('.option-row').addClass('copy-option');
+                    $(this).parents('.option-row').prev('.option-row').find('.col-md-2:last').prepend(plusButton.removeClass('hide'));
+                }
+                $(this).parents('.option-row').detach();
+            }
+        });
+
+        $('.row').on('click', '#get-code', function () {
+            $('#user-form-code').html('');
+
+            $('#form-builder .col-md-10').each(function () {
+                $('#user-form-code').append($(this).html());
+            });
+
+            $('#user-form-code').text($('#user-form-code').html());
+            $('.bs-example-modal-lg').modal('show');
+
+        });
+
+    });
+</script>
+</html>
