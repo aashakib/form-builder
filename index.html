@@ -64,7 +64,7 @@
                         </div>
                         <div class="form-group checkbox-common">
                             <select name="checkbox_layout" class="form-control" disabled>
-                                <option value="horizontal">Horizontal</option>
+                                <option value="horizontal">Horizontal (default)</option>
                                 <option value="inline">Inline</option>
                             </select>
                         </div>
@@ -102,13 +102,13 @@
                         </div>
                         <div class="form-group dropdown-common">
                             <div class="row option-row copy-option">
-                                <div class="col-md-10">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         <input type="text" name="dropdown_options" class="form-control"
                                                placeholder="options">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <button type="button" class="btn btn-default btn-success  btn-sm add-option"><i
                                             class="glyphicon glyphicon-plus"></i></button>
                                     <button type="button" class="btn btn-default btn-danger btn-sm remove-option"><i
@@ -148,8 +148,7 @@
         </div>
     </div>
 
-
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="Copy Code">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -163,13 +162,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-
-
             </div>
         </div>
     </div>
-
-
 </div>
 </body>
 
@@ -289,7 +284,7 @@
         <div class="col-md-10">
             <div class="form-group">
                 <label>{{label}}</label>
-                {{#ifCond checkbox_layout '==' 'horizontal'}}
+                {{#checkCondition checkbox_layout '==' 'horizontal'}}
                 {{#if dropdown_options}}
                 {{#each dropdown_options}}
                 <div class="checkbox">
@@ -313,8 +308,7 @@
                     {{/each}}
                     {{/if}}
                 </div>
-                {{/ifCond}}
-
+                {{/checkCondition}}
             </div>
         </div>
         <div class="col-md-1">
@@ -336,7 +330,7 @@
         <div class="col-md-10">
             <div class="form-group">
                 <label>{{label}}</label>
-                {{#ifCond checkbox_layout '==' 'horizontal'}}
+                {{#checkCondition checkbox_layout '==' 'horizontal'}}
                 {{#if dropdown_options}}
                 {{#each dropdown_options}}
                 <div class="checkbox">
@@ -360,8 +354,7 @@
                     {{/each}}
                     {{/if}}
                 </div>
-                {{/ifCond}}
-
+                {{/checkCondition}}
             </div>
         </div>
         <div class="col-md-1">
@@ -374,29 +367,27 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js"></script>
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/syntaxhighlighter/3.0.83/scripts/shCore.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/syntaxhighlighter/3.0.83/scripts/shBrushXml.js"></script> -->
+
 <script type="text/javascript">
     ;
-
-    Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+    Handlebars.registerHelper('checkCondition', function (param1, operator, param2, options) {
         switch (operator) {
             case '==':
-                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                return (param1 == param2) ? options.fn(this) : options.inverse(this);
             case '===':
-                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                return (param1 === param2) ? options.fn(this) : options.inverse(this);
             case '<':
-                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                return (param1 < param2) ? options.fn(this) : options.inverse(this);
             case '<=':
-                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                return (param1 <= param2) ? options.fn(this) : options.inverse(this);
             case '>':
-                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                return (param1 > param2) ? options.fn(this) : options.inverse(this);
             case '>=':
-                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                return (param1 >= param2) ? options.fn(this) : options.inverse(this);
             case '&&':
-                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                return (param1 && param2) ? options.fn(this) : options.inverse(this);
             case '||':
-                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                return (param1 || param2) ? options.fn(this) : options.inverse(this);
             default:
                 return options.inverse(this);
         }
@@ -412,16 +403,6 @@
         hideAll();
         var plusButton = $('.hide');
         var orgFrom = $('#form-setting').html();
-
-        function getFormData($form) {
-            var unindexed_array = $form.serializeArray();
-            var indexed_array = {};
-            $.map(unindexed_array, function (n, i) {
-                indexed_array[n['name']] = n['value'];
-            });
-
-            return indexed_array;
-        }
 
         $.fn.serializeObject = function () {
             var o = {};
@@ -441,7 +422,6 @@
 
 
         function resetForm() {
-//            $('#form-setting')[0].reset();
             $('#form-setting').html(orgFrom);
             $("#form-setting input").attr('disabled');
         }
@@ -453,11 +433,9 @@
         var checkboxTemplate = $("#checkbox-template").html();
         var radioTemplate = $("#radio-template").html();
 
-        var processTextTemplate = function ($form, templateFormat) {
+        var processMyTemplate = function ($form, templateFormat) {
             var template = Handlebars.compile(templateFormat);
-//            var formdata = getFormData($form);
             var formdata = $form.serializeObject();
-            console.log(formdata);
             $("#form-builder").append(template(formdata));
         }
 
@@ -497,20 +475,17 @@
             var selected = $('#input_types').val();
 
             if (selected == 'text') {
-                processTextTemplate($form, txtTemplate);
-                /*var template = Handlebars.compile(txtTemplate);
-                 var formdata = getFormData($form);
-                 $("#form-builder").append(template(formdata));*/
+                processMyTemplate($form, txtTemplate);
             } else if (selected == 'textarea') {
-                processTextTemplate($form, txtareaTemplate);
+                processMyTemplate($form, txtareaTemplate);
             } else if (selected == 'file') {
-                processTextTemplate($form, fileTemplate);
+                processMyTemplate($form, fileTemplate);
             } else if (selected == 'dropdown') {
-                processTextTemplate($form, dropdownTemplate);
+                processMyTemplate($form, dropdownTemplate);
             } else if (selected == 'checkbox') {
-                processTextTemplate($form, checkboxTemplate);
+                processMyTemplate($form, checkboxTemplate);
             }else if (selected == 'radio') {
-                processTextTemplate($form, radioTemplate);
+                processMyTemplate($form, radioTemplate);
             }
 
             resetForm();
@@ -520,7 +495,6 @@
         // remove row
         $('#form-builder').on('click', '.remove-row', function () {
             $(this).parents('.custom-row').detach();
-            //$(this).parents('.row').detach();
         });
 
         // code for up
